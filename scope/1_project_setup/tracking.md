@@ -1,0 +1,84 @@
+# Project setup — tracking
+
+Source: [requirements.md](./requirements.md)
+
+**Legend:** `- [ ]` not started · `- [x]` done · add dates/notes inline as you go.
+
+---
+
+## Stack research (client approval required)
+
+Each item: research options, document recommendation, get client sign-off.
+
+- [ ] **Database** — options evaluated; recommendation documented; client approved
+  - Options evaluated and recommendation documented: [ADR-001](../../docs/decisions/001-primary-database.md) (PostgreSQL, status: Proposed). Awaiting client approval.
+- [ ] **API** — options evaluated; recommendation documented; client approved
+- [ ] **Server** — options evaluated; recommendation documented; client approved
+- [ ] **Auth service** — options evaluated; recommendation documented; client approved
+- [ ] **Payment service** — options evaluated; recommendation documented; client approved
+- [ ] **App notifications** — options evaluated; recommendation documented; client approved
+- [ ] **Sports API data pulling** — provider(s) evaluated; integration approach documented; client approved
+- [ ] **App hosting / deployments** — options evaluated; recommendation documented; client approved
+- [ ] **Server hosting / deployments** — options evaluated; recommendation documented; client approved
+- [ ] **Testing framework** — options evaluated; recommendation documented; client approved
+- [ ] **Load testing framework** — options evaluated; recommendation documented; client approved
+
+**Stack research gate:** All items above approved before locking setup & delivery work.
+
+| Item                         | Owner | Target date | Client approved (Y/N) | Notes |
+| ---------------------------- | ----- | ----------- | --------------------- | ----- |
+| Database                     |       |             |                       |       |
+| API                          |       |             |                       |       |
+| Server                       |       |             |                       |       |
+| Auth service                 |       |             |                       |       |
+| Payment service              |       |             |                       |       |
+| App notifications            |       |             |                       |       |
+| Sports API data pulling      |       |             |                       |       |
+| App hosting / deployments    |       |             |                       |       |
+| Server hosting / deployments |       |             |                       |       |
+| Testing framework            |       |             |                       |       |
+| Load testing framework       |       |             |                       |       |
+
+---
+
+## Setup & delivery
+
+### Code setup — monorepo, checked in to GitHub
+
+- [ ] Monorepo structure defined (packages/apps, tooling)
+- [ ] Repository created on GitHub
+- [ ] Initial code scaffold committed and pushed
+- [ ] Branch protection / access documented (if applicable)
+- [ ] README or contributor docs for local dev (minimal)
+
+### Backend — API and database; staging and production; deployed
+
+- [ ] Database provisioned (staging)
+- [ ] Database provisioned (production)
+- [ ] API project wired to database (migrations/schema baseline)
+- [ ] Staging environment configured
+- [ ] Production environment configured
+- [ ] Staging deployment live and smoke-tested
+- [ ] Production deployment live and smoke-tested
+- [ ] Environment variables / secrets documented for team
+
+### Apps — iOS and Android; staging and production; preferably deployed
+
+- [ ] Shared mobile app codebase in monorepo (or linked structure)
+- [ ] iOS — staging build/config
+- [ ] iOS — production build/config
+- [ ] Android — staging build/config
+- [ ] Android — production build/config
+- [ ] Staging distribution (TestFlight / internal track / equivalent)
+- [ ] Production distribution path defined (App Store / Play Store or client preference)
+- [ ] Apps pointed at staging API; verified
+- [ ] Apps pointed at production API; verified (when ready)
+
+---
+
+## Phase completion checklist
+
+- [ ] Stack research complete and client-approved
+- [ ] Monorepo on GitHub
+- [ ] Backend deployed to staging and production
+- [ ] Mobile apps built for staging and production (deployed or distributable per client preference)

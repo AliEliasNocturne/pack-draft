@@ -1,0 +1,19 @@
+{
+	"workbench.colorCustomizations": {
+		"editorError.foreground": "#ff0f0f",
+		"editorWarning.foreground": "#fff837",
+		"activityBar.background": "#0F5833",
+		"titleBar.activeBackground": "#0F5833",
+		"titleBar.inactiveBackground": "#17844D",
+		"statusBar.background": "#0F5833",
+		"statusBar.debuggingBackground": "#0F5833",
+		"statusBar.noFolderBackground": "#0F5833",
+		"activityBar.foreground": "#FFFFFF",
+		"activityBar.inactiveForeground": "#FFFFFF",
+		"titleBar.activeForeground": "#FFFFFF",
+		"titleBar.inactiveForeground": "#FFFFFF",
+		"statusBar.foreground": "#FFFFFF",
+		"statusBar.debuggingForeground": "#FFFFFF",
+		"statusBar.noFolderForeground": "#FFFFFF"
+	}
+}
