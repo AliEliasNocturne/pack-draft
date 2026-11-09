@@ -239,7 +239,7 @@ Costs that apply to every option and are not in the table:
 - NAT gateway: $32.85 per month plus $0.045 per GB (if tasks or functions sit in private subnets).
 - The sports-data worker: about $14 per month for one 0.5 vCPU and 1 GB Fargate task.
 - The database from ADR-002.
-- CloudWatch logs, data transfer out, and a staging environment. Staging on Fargate has a floor of about $40 per month (one small task plus an ALB).
+- CloudWatch logs, data transfer out, and a staging environment. Staging is priced in the Decision section (about $60 per month).
 
 Reading the table:
 
@@ -288,6 +288,24 @@ Deployments (CircleCI is the team's choice. We did not compare CI tools):
 - **Database migrations** run as a step before the new tasks start. They must be backward compatible (ADR-001), so old and new tasks can run together during a rollout.
 - **Rollback** is automatic on a failed health check or deployment alarm (Express Mode canary for the API, circuit breaker for workers). A manual rollback redeploys the previous image tag.
 - **Terraform** changes run `plan` on pull requests and `apply` on approval, separately from app deploys.
+
+**Estimated staging cost (scaled down): about $60 per month.** Staging runs in its own AWS account (ADR-002), so it cannot share the production ALB.
+
+| Item                                                          | Monthly |
+| ------------------------------------------------------------- | ------- |
+| API: 1 Fargate ARM task, 0.5 vCPU and 1 GB, minimum 1 and maximum 2 | $14.42  |
+| Worker: 1 Fargate ARM task, 0.5 vCPU and 1 GB                 | $14.42  |
+| Application Load Balancer ($16.43 hour charge, $7.30 for two public IPv4 addresses, minimal capacity units) | ~$24    |
+| Public IPv4 addresses for the 2 tasks ($3.65 each)            | $7.30   |
+| **Total**                                                     | **~$60** |
+
+Assumptions:
+
+- Staging tasks run in public subnets, with inbound traffic limited to the ALB by security group. This avoids a NAT gateway ($32.85 per month plus $0.045 per GB). Production uses private subnets.
+- With staging tasks in private subnets and a NAT gateway instead, the total is about $86.
+- One task per service means staging has no redundancy across Availability Zones. That is acceptable for staging.
+- Not included: CloudWatch logs, ECR storage, data transfer, and CircleCI credits. The staging database is in ADR-002.
+- To save more, set the worker to zero tasks outside test windows (saves $14.42). The ALB cannot scale to zero.
 
 Not decided here:
 

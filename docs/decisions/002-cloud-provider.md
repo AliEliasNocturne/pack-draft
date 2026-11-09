@@ -157,6 +157,8 @@ We choose **AWS** as the cloud provider, with **RDS for PostgreSQL** (Multi-AZ i
 
 We accept that AWS is harder to start with than Supabase. We reduce that cost with a small set of Terraform modules and by avoiding services we do not need.
 
+**Estimated staging cost (scaled down): about $14 per month.** One `db.t4g.micro` RDS for PostgreSQL instance, single-AZ, with 20 GB of storage, in a separate staging AWS account. This is the database only. It excludes the network and API hosts, which are priced in [ADR-003](./003-api-runtime-and-compute.md), and small items such as Terraform state in S3, billing alerts, and backups beyond the free allowance. The $14 is a US East (N. Virginia) on-demand figure from the cost estimate above.
+
 Not decided here:
 
 - **Server runtime.** For example ECS Fargate, App Runner, or Lambda. Decided in [ADR-003](./003-api-runtime-and-compute.md).

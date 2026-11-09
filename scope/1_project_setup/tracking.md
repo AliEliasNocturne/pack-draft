@@ -16,9 +16,14 @@ Each item: research options, document recommendation, get client sign-off.
   - Options evaluated and recommendation documented: [ADR-002](../../docs/decisions/002-cloud-provider.md) (AWS with RDS for PostgreSQL, status: Proposed). Awaiting client approval.
 - [x] **API / Server / Server hosting & deployments** — options evaluated; recommendation documented; client approved
   - Combined into one item. Options evaluated and recommendation documented: [ADR-003](../../docs/decisions/003-api-runtime-and-compute.md) (Node.js + TypeScript on ECS Fargate, CircleCI deploys, status: Proposed). Awaiting client approval.
-- [ ] **Auth service** — options evaluated; recommendation documented; client approved
-- [ ] **Payment service** — options evaluated; recommendation documented; client approved
-- [ ] **App notifications** — options evaluated; recommendation documented; client approved
+- [x] **Auth service** — options evaluated; recommendation documented; client approved
+  - Options evaluated and recommendation documented: [ADR-004](../../docs/decisions/004-auth-service.md) (Auth0 with Universal Login, redirect accepted; status: Proposed). Awaiting client approval.
+- [x] **Payment service** — options evaluated; recommendation documented; client approved
+  - Options evaluated and recommendation documented: [ADR-005](../../docs/decisions/005-payment-service.md) (Apple/Google in-app purchase through RevenueCat, our Postgres ledger as source of truth, no redirects; status: Proposed). Awaiting client approval.
+- [ ] **Mobile framework** — options evaluated; recommendation documented; client approved
+  - Not researched yet. Expo + React Native is assumed by the items below it. Needs its own ADR and client sign-off.
+- [x] **App notifications** — options evaluated; recommendation documented; client approved
+  - Depends on **Mobile framework** (above); assumes Expo + React Native. Options evaluated and recommendation documented: [ADR-006](../../docs/decisions/006-app-notifications.md) (inbox and preferences in Postgres, push sent through the Expo Push Service from a worker via SQS, native tokens stored for a later move to direct FCM/APNs; status: Proposed). Awaiting client approval.
 - [ ] **Sports API data pulling** — provider(s) evaluated; integration approach documented; client approved
 - [ ] **App hosting / deployments** — options evaluated; recommendation documented; client approved
 - [ ] **Testing framework** — options evaluated; recommendation documented; client approved
@@ -33,6 +38,7 @@ Each item: research options, document recommendation, get client sign-off.
 | API / Server / Server hosting & deployments |       |             |                       |       |
 | Auth service                 |       |             |                       |       |
 | Payment service              |       |             |                       |       |
+| Mobile framework             |       |             |                       |       |
 | App notifications            |       |             |                       |       |
 | Sports API data pulling      |       |             |                       |       |
 | App hosting / deployments    |       |             |                       |       |

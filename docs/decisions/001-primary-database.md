@@ -164,6 +164,8 @@ We choose **PostgreSQL** as the primary database for all transactional data.
 4. Kalshi, Polymarket, Dapper Labs, and Sorare all use it for similar problems. DraftKings uses a relational engine for its ledger.
 5. It runs on every major host, so this choice does not lock in a cloud provider.
 
+**Estimated staging cost (scaled down): $0 per month.** PostgreSQL is open source and has no license fee. The staging database instance is priced in [ADR-002](./002-cloud-provider.md). Do not count it twice when totaling.
+
 Not decided here:
 
 - **Which managed Postgres host** (for example Amazon RDS or Aurora PostgreSQL, Neon, Supabase, Google Cloud SQL). Decide this together with the server hosting ADR.
