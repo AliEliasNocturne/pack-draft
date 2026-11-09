@@ -25,9 +25,12 @@ Each item: research options, document recommendation, get client sign-off.
 - [x] **App notifications** — options evaluated; recommendation documented; client approved
   - Depends on **Mobile framework** (above); assumes Expo + React Native. Options evaluated and recommendation documented: [ADR-006](../../docs/decisions/006-app-notifications.md) (inbox and preferences in Postgres, push sent through the Expo Push Service from a worker via SQS, native tokens stored for a later move to direct FCM/APNs; status: Proposed). Awaiting client approval.
 - [ ] **Sports API data pulling** — provider(s) evaluated; integration approach documented; client approved
-- [ ] **App hosting / deployments** — options evaluated; recommendation documented; client approved
-- [ ] **Testing framework** — options evaluated; recommendation documented; client approved
-- [ ] **Load testing framework** — options evaluated; recommendation documented; client approved
+- [x] **App hosting / deployments** — options evaluated; recommendation documented; client approved
+  - Depends on **Mobile framework** (above); assumes Expo + React Native. Options evaluated and recommendation documented: [ADR-008](../../docs/decisions/008-mobile-app-deployments.md) (Expo Build, Submit, and Update run by Expo Workflows with separate development, staging, and production app variants, over-the-air updates for fixes only, CircleCI keeps running checks; status: Proposed). Awaiting client approval.
+- [x] **Testing framework** — options evaluated; recommendation documented; client approved
+  - Options evaluated and recommendation documented: [ADR-009](../../docs/decisions/009-testing-framework.md) (Vitest for server and shared packages, Jest with `jest-expo` and RNTL for mobile, Maestro for end-to-end flows, real Postgres for database tests; status: Proposed). Awaiting client approval.
+- [x] **Load testing framework** — options evaluated; recommendation documented; client approved
+  - Options evaluated and recommendation documented: [ADR-007](../../docs/decisions/007-load-testing-framework.md) (k6 with TypeScript scripts, run from CircleCI for gate tests and from Fargate in the staging account for full runs against a production-sized test stack, with Postgres invariant checks and stubbed third parties; status: Proposed). Awaiting client approval.
 
 **Stack research gate:** All items above approved before locking setup & delivery work.
 
