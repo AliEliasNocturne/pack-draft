@@ -33,22 +33,6 @@ Each item: research options, document recommendation, get client sign-off.
 - [x] **Load testing framework** — options evaluated; recommendation documented; client approved
   - Options evaluated and recommendation documented: [ADR-007](../../docs/decisions/007-load-testing-framework.md) (k6 with TypeScript scripts, run from CircleCI for gate tests and from Fargate in the staging account for full runs against a production-sized test stack, with Postgres invariant checks and stubbed third parties; status: Proposed). Awaiting client approval.
 
-**Stack research gate:** All items above approved before locking setup & delivery work.
-
-| Item                                        | Owner | Target date | Client approved (Y/N) | Notes |
-| ------------------------------------------- | ----- | ----------- | --------------------- | ----- |
-| Database                                    |       |             |                       |       |
-| Cloud provider                              |       |             |                       |       |
-| API / Server / Server hosting & deployments |       |             |                       |       |
-| Auth service                                |       |             |                       |       |
-| Payment service                             |       |             |                       |       |
-| Mobile framework                            |       |             |                       |       |
-| App notifications                           |       |             |                       |       |
-| Sports API data pulling                     |       |             |                       |       |
-| App hosting / deployments                   |       |             |                       |       |
-| Testing framework                           |       |             |                       |       |
-| Load testing framework                      |       |             |                       |       |
-
 ---
 
 ## Setup & delivery
