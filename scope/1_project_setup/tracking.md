@@ -24,7 +24,8 @@ Each item: research options, document recommendation, get client sign-off.
   - Not researched yet. Expo + React Native is assumed by the items below it. Needs its own ADR and client sign-off.
 - [x] **App notifications** — options evaluated; recommendation documented; client approved
   - Depends on **Mobile framework** (above); assumes Expo + React Native. Options evaluated and recommendation documented: [ADR-006](../../docs/decisions/006-app-notifications.md) (inbox and preferences in Postgres, push sent through the Expo Push Service from a worker via SQS, native tokens stored for a later move to direct FCM/APNs; status: Proposed). Awaiting client approval.
-- [ ] **Sports API data pulling** — provider(s) evaluated; integration approach documented; client approved
+- [x] **Sports API data pulling** — provider(s) evaluated; integration approach documented; client approved
+  - Options evaluated and recommendation documented: [ADR-010](../../docs/decisions/010-sports-data-provider.md) (SportsDataIO as lead candidate with Sportradar as benchmark and NCAA fallback, central polling from one worker with our own player and game IDs, evolution and settlement on verified-final stats; status: Proposed). **Provider is not final:** it needs vendor quotes, written license answers (contests and collectibles, derived scoring, data retention after termination), and a trial comparison on real data. Awaiting client approval.
 - [x] **App hosting / deployments** — options evaluated; recommendation documented; client approved
   - Depends on **Mobile framework** (above); assumes Expo + React Native. Options evaluated and recommendation documented: [ADR-008](../../docs/decisions/008-mobile-app-deployments.md) (Expo Build, Submit, and Update run by Expo Workflows with separate development, staging, and production app variants, over-the-air updates for fixes only, CircleCI keeps running checks; status: Proposed). Awaiting client approval.
 - [x] **Testing framework** — options evaluated; recommendation documented; client approved
@@ -34,19 +35,19 @@ Each item: research options, document recommendation, get client sign-off.
 
 **Stack research gate:** All items above approved before locking setup & delivery work.
 
-| Item                         | Owner | Target date | Client approved (Y/N) | Notes |
-| ---------------------------- | ----- | ----------- | --------------------- | ----- |
-| Database                     |       |             |                       |       |
-| Cloud provider               |       |             |                       |       |
+| Item                                        | Owner | Target date | Client approved (Y/N) | Notes |
+| ------------------------------------------- | ----- | ----------- | --------------------- | ----- |
+| Database                                    |       |             |                       |       |
+| Cloud provider                              |       |             |                       |       |
 | API / Server / Server hosting & deployments |       |             |                       |       |
-| Auth service                 |       |             |                       |       |
-| Payment service              |       |             |                       |       |
-| Mobile framework             |       |             |                       |       |
-| App notifications            |       |             |                       |       |
-| Sports API data pulling      |       |             |                       |       |
-| App hosting / deployments    |       |             |                       |       |
-| Testing framework            |       |             |                       |       |
-| Load testing framework       |       |             |                       |       |
+| Auth service                                |       |             |                       |       |
+| Payment service                             |       |             |                       |       |
+| Mobile framework                            |       |             |                       |       |
+| App notifications                           |       |             |                       |       |
+| Sports API data pulling                     |       |             |                       |       |
+| App hosting / deployments                   |       |             |                       |       |
+| Testing framework                           |       |             |                       |       |
+| Load testing framework                      |       |             |                       |       |
 
 ---
 
