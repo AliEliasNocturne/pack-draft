@@ -212,6 +212,8 @@ Read the cost row with care. Two of the four rows rest on single anonymous posts
 
 We pick **SportsDataIO as the lead candidate** for all six leagues. **Sportradar is the benchmark** we compare against and the fallback for NCAA depth. We do not pick Goalserve or Tank01 as the main provider. The pick becomes final only when all three gates below pass.
 
+**Multiple APIs are likely.** There is a good chance we cannot satisfy every league from one vendor alone. Coverage gaps differ by provider (for example Tank01 has no NCAA; Sportradar's live NCAA men's basketball player stats are not uniform across all Division I games; SportsDataIO's bowl-game coverage is not stated, FCS is not stated, and college football defensive player stats are not live). Rights and price can also split the answer by league. We should assume a **multi-provider setup** is on the table: one lead API where it is strong, plus one or more supplemental APIs per league or feed type where the lead is thin or fails the bake-off. The provider-neutral model and adapter boundary in Consequences are written for that outcome, not only for a future full replacement of a single vendor.
+
 Why SportsDataIO leads:
 
 1. **Rights fit is the highest risk, and it has the clearest public answer.** The product stores data for years, derives scores and evolution from it, and sells collectibles. SportsDataIO's FAQ already says yes to storing, to derived analytics, and to negotiating post-termination retention. Sportradar's standard terms point the other way on every one of those, and its NBA and MLB addendum names electronic trading cards as barred.
@@ -233,6 +235,7 @@ Why not the others:
 
 We accept these risks:
 
+- **We may need more than one API in production.** Full coverage of all six leagues, at the depth the scope and bake-off require, may require combining SportsDataIO with Sportradar, Goalserve, Tank01, or another source on a per-league or per-feed basis.
 - **We may be wrong on price.** If SportsDataIO's quote is far above the reported $10,000 a year, the order changes.
 - **SportsDataIO has no push.** We poll every few seconds. Stats are 15 to 30 seconds behind broadcast.
 - **College football defensive stats arrive late.** Any contest that scores them live is wrong until the feed catches up. See Open questions.
