@@ -1,0 +1,11 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Versions shared by more than one workspace package.
+catalog:
+  typescript: ~6.0.3
+
+# pnpm 10 skips dependency install scripts unless listed here.
+onlyBuiltDependencies:
+  - esbuild
