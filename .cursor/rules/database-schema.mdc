@@ -1,0 +1,33 @@
+---
+description: Postgres/Drizzle schema conventions — no automatic timestamp or audit updates
+globs: apps/api/src/db/**,apps/api/drizzle/**
+alwaysApply: false
+---
+
+# Database schema
+
+## No automatic “updated” fields
+
+Do **not** use database or ORM machinery that changes audit or timestamp columns without explicit application code.
+
+**Forbidden:**
+
+- Drizzle `.$onUpdate(...)` on any column
+- Postgres `BEFORE UPDATE` triggers that set `updated_at` (or similar)
+- Column definitions that imply “always refresh on write” without the handler passing the value
+
+**Allowed:**
+
+- `DEFAULT now()` (or equivalent) on **insert only** for `created_at` / initial `updated_at`
+- Setting `updated_at`, `updated_by`, and related fields in the **same transaction** as the business update (repository/service layer)
+
+```typescript
+// ❌ BAD — ORM auto-updates updated_at
+updatedAt: timestamp("updated_at").defaultNow().notNull().$onUpdate(() => new Date()),
+
+// ✅ GOOD — schema only; app sets on update
+updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow().notNull(),
+// In update path: .set({ ...fields, updatedAt: new Date(), updatedBy: actorId })
+```
+
+When adding tables, spread `metadataColumns` from `metadata.ts` and keep this rule in mind for any one-off timestamp columns too.

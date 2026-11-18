@@ -1,0 +1,14 @@
+---
+description: Never bypass safe-chain package age checks when installing Python dependencies
+alwaysApply: true
+---
+
+# Safe-chain Policy
+
+Never use `--safe-chain-skip-minimum-package-age` when running pip, poetry, or any Python package installer. If a package is blocked by safe-chain's minimum age check, either:
+
+1. Pin to an older version that passes the check
+2. Wait for the package to age past the threshold
+3. Ask the user before proceeding
+
+This protects against supply-chain attacks via newly published malicious packages.

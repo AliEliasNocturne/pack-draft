@@ -1,7 +1,10 @@
 ---
 name: architecture-decision-records
-description: Document technical decisions as Architecture Decision Records (ADRs) with context, options considered, and rationale.
-user-invocable: true
+description: >-
+  Document technical decisions as Architecture Decision Records (ADRs) with
+  context, options considered, and rationale. Use when writing or updating an
+  ADR, choosing between technical options, or when the user mentions ADRs or
+  docs/decisions.
 ---
 
 # Architecture Decision Records

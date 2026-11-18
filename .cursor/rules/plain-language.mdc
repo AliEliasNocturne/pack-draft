@@ -1,0 +1,14 @@
+---
+description: Write ADRs, PRDs, PR descriptions, tickets, and other documents in plain language. Use technical terms when they are the precise name of the thing.
+alwaysApply: true
+---
+
+# Plain language
+
+Write documents so a teammate can follow them on one read. This covers ADRs, PRDs, PR descriptions, tickets, design notes, and review comments.
+
+Use the technical term when it is the precise name: an API, an IAM role, a story point, a specific file. Do not replace that term with a vague phrase.
+
+Say what is true and what to do. Use short sentences. Name the thing, then say what happens to it.
+
+Leave out filler, slogans, and stacked abstractions. Do not dress up a simple decision so it sounds more important than it is. If a sentence only restates the one before it, cut it.

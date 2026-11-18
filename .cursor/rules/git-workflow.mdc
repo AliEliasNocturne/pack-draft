@@ -1,0 +1,93 @@
+---
+description: Git workflow conventions for branching, commits, and pull requests. Use when creating branches, writing commit messages, creating or editing PRs, or any git operations in this repo.
+alwaysApply: false
+---
+
+# Git Workflow Conventions
+
+## Jira ticket required before ship
+
+Branch names, commit scopes, and PR titles all expect a **Jira ticket** (e.g. `ENG-1234`).
+
+**Before** creating a branch, committing, pushing, or opening/updating a PR:
+
+1. Resolve the ticket from the user’s request, branch name, or commit history.
+2. If you **cannot** identify the ticket with confidence, **ask the user** — do not guess, omit the scope, or use placeholder branch names like `feat/refactor/...` without a ticket.
+3. Do not commit or push spill/work that belongs on a different ticket than the current branch (split branch first; see [references/pr-style.md](references/pr-style.md)).
+
+Only proceed with `git commit`, `git push`, and `gh pr create` / `gh pr edit` once the ticket is confirmed and reflected in branch + `type(TICKET):` title/message.
+
+## Branch Naming
+
+Format: `feat/<ticket-lowercase>/<short-description>`
+
+- Ticket number is lowercased with hyphen kept (e.g., ENG-218 becomes `eng-218`)
+- Description is kebab-case
+- Examples:
+  - `feat/eng-218/ci-deploy-pipeline`
+  - `feat/eng-8404/api-schema-migration`
+
+## Commit Messages
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/). Include the ticket number in the scope.
+
+Format: `type(TICKET): description`
+
+- Ticket number stays uppercase in commits (e.g., `ENG-218`)
+- Types: `feat`, `fix`, `ci`, `build`, `refactor`, `test`, `docs`, `chore`
+
+Examples:
+
+```
+ci(ENG-218): add staging deploy workflow
+feat(ENG-218): add pack draft API health check
+fix(ENG-218): correct drizzle migration journal path
+build(ENG-8410): address dependency vulnerabilities
+```
+
+## PR mechanics
+
+**Title**: Same format as commit messages — `type(TICKET): description`
+
+**Body**: Follow `.github/PULL_REQUEST_TEMPLATE.md` when it exists.
+
+The description orients the reviewer. Do not list the changes. The diff already does that.
+
+- **Context** states the outcome: what this change is for, and what is true when it lands.
+- The rest points at decisions that matter and why, and at anything a reviewer should look at or push back on. Skip the obvious.
+- Overall, keep the description concise.
+
+For one PR per ticket, commit history, and a fuller description pass, read [references/pr-style.md](references/pr-style.md).
+
+### Epic PR stacks
+
+When an epic is a chain of dependent tickets, stack **one PR per ticket**. Later tickets branch from the previous ticket's branch, not from `main`. Reviewers merge from the bottom (closest to `main`) up.
+
+Use `gh stack` in this repo
+
+1. Finish and push the current top of the stack (or check it out with `gh stack checkout`).
+2. Add the next ticket's branch on top of it:
+   `gh stack add feat/<ticket-lowercase>/<short-description>`
+3. Commit the ticket's work on that branch.
+4. `gh stack submit --auto` to push and open/update PRs. New PRs are drafts unless you pass `--open`.
+5. Fill in the new PR body (use `.github/PULL_REQUEST_TEMPLATE.md` when present). `--base` is handled by the stack: each PR targets the previous branch.
+6. After a parent merges, `gh stack sync` so remaining PRs retarget. Do not retarget a child PR to `main` by hand while its parent is still open.
+
+Do not squash or rebase already-pushed parent PRs to "clean up" the stack. Never force-push. If the top branch needs a follow-up, add a new commit on that branch and `gh stack submit --auto` again.
+
+### Updating PR descriptions
+
+The GitHub token may lack `read:org` scope, which causes `gh pr edit` to fail.
+Use the REST API instead:
+
+```bash
+gh api repos/AliEliasNocturne/pack-draft/pulls/<NUMBER> \
+  --method PATCH \
+  --field body='<new body>' \
+  --silent
+```
+
+## Git Preferences
+
+- **Never force-push.** If a commit needs correcting after push, create a new commit instead of amending + force-pushing.
+- Never amend commits that have already been pushed to the remote.
