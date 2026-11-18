@@ -21,7 +21,11 @@ describe("GET /health", () => {
 
 describe("loadEnv", () => {
   it("applies defaults", () => {
-    expect(loadEnv({})).toMatchObject({ PORT: 3000, NODE_ENV: "development" });
+    expect(loadEnv({})).toMatchObject({
+      PORT: 3000,
+      NODE_ENV: "development",
+      DATABASE_URL: "postgresql://pack:pack@localhost:5432/pack_draft",
+    });
   });
 
   it("rejects an invalid port", () => {

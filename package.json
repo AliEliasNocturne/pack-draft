@@ -11,6 +11,10 @@
     "dev:mobile": "pnpm --filter @pack-draft/mobile start",
     "ios": "pnpm --filter @pack-draft/mobile ios",
     "android": "pnpm --filter @pack-draft/mobile android",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @pack-draft/api db:migrate",
+    "db:generate": "pnpm --filter @pack-draft/api db:generate",
     "build": "pnpm -r --if-present build",
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm -r --if-present test"

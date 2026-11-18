@@ -8,15 +8,23 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "dotenv": "^18.0.10",
+    "drizzle-orm": "^0.45.4",
     "fastify": "^5.12.8",
     "fastify-type-provider-zod": "^7.0.0",
+    "pg": "^8.23.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^24",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^0.31.11",
     "tsx": "^4.23.15",
     "typescript": "catalog:",
     "vitest": "^5.1.0"

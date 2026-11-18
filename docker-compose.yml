@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: pack
+      POSTGRES_PASSWORD: pack
+      POSTGRES_DB: pack_draft
+    volumes:
+      - pack_draft_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pack -d pack_draft"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pack_draft_pg:

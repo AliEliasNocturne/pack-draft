@@ -15,12 +15,15 @@ scope/      Project scope and tracking
 
 - Node 22 or newer (`.nvmrc` pins 24)
 - pnpm 10 (`corepack enable` picks the version from `package.json`)
+- Docker (local Postgres for the API)
 - For the mobile app: Xcode (iOS simulator) and/or Android Studio (emulator), or Expo Go on a device
 
 ## Getting started
 
 ```sh
 pnpm install
+pnpm db:up
+pnpm db:migrate
 ```
 
 | App | Quick start | Details |
@@ -28,12 +31,18 @@ pnpm install
 | API | `pnpm dev:api` | [apps/api/README.md](apps/api/README.md) |
 | Mobile | `pnpm dev:mobile` | [apps/mobile/README.md](apps/mobile/README.md) |
 
+Local Postgres defaults: `postgresql://pack:pack@localhost:5432/pack_draft` (see `docker-compose.yml`).
+
 ## Scripts (run from the repo root)
 
 | Command | What it does |
 | --- | --- |
 | `pnpm dev:api` | API with file watching (`tsx watch`) |
 | `pnpm dev:mobile` | Expo dev server |
+| `pnpm db:up` | Start local Postgres (Docker Compose) |
+| `pnpm db:down` | Stop local Postgres |
+| `pnpm db:generate -- --name=<slug>` | Generate a named Drizzle SQL migration from the API schema |
+| `pnpm db:migrate` | Apply pending Drizzle migrations |
 | `pnpm build` | Build every package that has a `build` script |
 | `pnpm typecheck` | `tsc --noEmit` in every package |
 | `pnpm test` | Run tests in every package (Vitest for the API) |
