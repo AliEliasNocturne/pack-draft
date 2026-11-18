@@ -45,7 +45,10 @@ Local Postgres defaults: `postgresql://pack:pack@localhost:5432/pack_draft` (see
 | `pnpm db:migrate` | Apply pending Drizzle migrations |
 | `pnpm build` | Build every package that has a `build` script |
 | `pnpm typecheck` | `tsc --noEmit` in every package |
-| `pnpm test` | Run tests in every package (Vitest for the API) |
+| `pnpm lint` | ESLint in every package that defines it |
+| `pnpm format` | Prettier write in every package that defines it |
+| `pnpm test` | Run tests in every package (Vitest API, Jest mobile) |
+| `pnpm check` | lint + typecheck + test + build (CI-ready) |
 
 Run a script in one package with `pnpm --filter @pack-draft/api <script>`.
 

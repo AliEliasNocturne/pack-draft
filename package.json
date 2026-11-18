@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "packageManager": "pnpm@10.31.0",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.13.0",
+    "pnpm": ">=10.31.0"
   },
   "scripts": {
     "dev:api": "pnpm --filter @pack-draft/api dev",
@@ -18,7 +19,24 @@
     "build": "pnpm -r --if-present build",
     "typecheck": "pnpm -r --if-present typecheck",
     "lint": "pnpm -r --if-present lint",
-    "format": "pnpm --filter @pack-draft/mobile format",
-    "test": "pnpm -r --if-present test"
+    "format": "pnpm -r --if-present format",
+    "format:check": "pnpm -r --if-present format:check",
+    "test": "pnpm -r --if-present test",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7"
+  },
+  "lint-staged": {
+    "apps/api/**/*.{ts,js}": [
+      "pnpm --filter @pack-draft/api exec eslint --fix",
+      "pnpm --filter @pack-draft/api exec prettier --write"
+    ],
+    "apps/mobile/**/*.{ts,tsx,js,jsx}": [
+      "pnpm --filter @pack-draft/mobile exec eslint --fix",
+      "pnpm --filter @pack-draft/mobile exec prettier --write"
+    ]
   }
 }

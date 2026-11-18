@@ -23,10 +23,10 @@ npx expo install --fix      # fix incompatible package versions
 
 Run lint and typecheck before declaring any task done.
 
-## Navigation & Routing
+## Entry & navigation
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
+- The app entry is `index.ts` registering `App.tsx` (classic Expo root). There is no router yet.
+- When multi-screen navigation is added, use **Expo Router** with routes under `src/app/`. Keep non-route code (components, hooks, utils) outside `src/app/`. See [ADR-013](../../docs/decisions/013-mobile-framework.md).
 - Docs: https://docs.expo.dev/router/introduction.md
 
 ## Building with EAS

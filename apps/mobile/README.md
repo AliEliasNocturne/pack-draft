@@ -39,6 +39,11 @@ Run from `apps/mobile` or with `pnpm --filter @pack-draft/mobile <script>` from 
 | `android`   | Dev server + Android        |
 | `web`       | Dev server + web (optional) |
 | `typecheck` | `tsc --noEmit`              |
+| `lint`      | ESLint                      |
+| `format`    | Prettier write              |
+| `test`      | Jest (`jest-expo`)          |
+
+Copy `.env.example` to `.env` when the app needs an API base URL (`EXPO_PUBLIC_API_URL`).
 
 ## Adding dependencies
 

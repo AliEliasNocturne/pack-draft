@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "root: dev:api",
+      "label": "dev:api",
       "type": "shell",
       "command": "pnpm run dev:api",
       "options": { "cwd": "${workspaceFolder}" },
@@ -23,7 +23,7 @@
       }
     },
     {
-      "label": "root: dev:mobile",
+      "label": "dev:mobile",
       "type": "shell",
       "command": "pnpm run dev:mobile",
       "options": { "cwd": "${workspaceFolder}" },
@@ -44,7 +44,7 @@
       }
     },
     {
-      "label": "root: ios",
+      "label": "ios",
       "type": "shell",
       "command": "pnpm run ios",
       "options": { "cwd": "${workspaceFolder}" },
@@ -65,7 +65,7 @@
       }
     },
     {
-      "label": "root: android",
+      "label": "android",
       "type": "shell",
       "command": "pnpm run android",
       "options": { "cwd": "${workspaceFolder}" },
@@ -86,7 +86,7 @@
       }
     },
     {
-      "label": "root: db:up",
+      "label": "db:up",
       "type": "shell",
       "command": "pnpm run db:up",
       "options": { "cwd": "${workspaceFolder}" },
@@ -94,7 +94,7 @@
       "problemMatcher": []
     },
     {
-      "label": "root: db:down",
+      "label": "db:down",
       "type": "shell",
       "command": "pnpm run db:down",
       "options": { "cwd": "${workspaceFolder}" },
@@ -102,7 +102,7 @@
       "problemMatcher": []
     },
     {
-      "label": "root: db:migrate",
+      "label": "db:migrate",
       "type": "shell",
       "command": "pnpm run db:migrate",
       "options": { "cwd": "${workspaceFolder}" },
@@ -110,7 +110,7 @@
       "problemMatcher": []
     },
     {
-      "label": "root: db:generate",
+      "label": "db:generate",
       "type": "shell",
       "command": "pnpm run db:generate",
       "options": { "cwd": "${workspaceFolder}" },
@@ -118,7 +118,7 @@
       "problemMatcher": []
     },
     {
-      "label": "root: build",
+      "label": "build",
       "type": "shell",
       "command": "pnpm run build",
       "options": { "cwd": "${workspaceFolder}" },
@@ -127,7 +127,7 @@
       "problemMatcher": ["$tsc"]
     },
     {
-      "label": "root: typecheck",
+      "label": "typecheck",
       "type": "shell",
       "command": "pnpm run typecheck",
       "options": { "cwd": "${workspaceFolder}" },
@@ -136,7 +136,7 @@
       "problemMatcher": ["$tsc"]
     },
     {
-      "label": "root: lint",
+      "label": "lint",
       "type": "shell",
       "command": "pnpm run lint",
       "options": { "cwd": "${workspaceFolder}" },
@@ -144,7 +144,7 @@
       "problemMatcher": ["$eslint-stylish"]
     },
     {
-      "label": "root: format",
+      "label": "format",
       "type": "shell",
       "command": "pnpm run format",
       "options": { "cwd": "${workspaceFolder}" },
@@ -152,7 +152,7 @@
       "problemMatcher": []
     },
     {
-      "label": "root: test",
+      "label": "test",
       "type": "shell",
       "command": "pnpm run test",
       "options": { "cwd": "${workspaceFolder}" },
@@ -161,242 +161,13 @@
       "problemMatcher": []
     },
     {
-      "label": "api: dev",
-      "type": "npm",
-      "script": "dev",
-      "path": "apps/api",
-      "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "group": "api"
-      },
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": { "regexp": "^$" },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".",
-          "endsPattern": "."
-        }
-      }
-    },
-    {
-      "label": "api: build",
-      "type": "npm",
-      "script": "build",
-      "path": "apps/api",
-      "group": "build",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "api" },
-      "problemMatcher": ["$tsc"]
-    },
-    {
-      "label": "api: start",
-      "type": "npm",
-      "script": "start",
-      "path": "apps/api",
-      "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "group": "api"
-      },
-      "problemMatcher": {
-        "owner": "api",
-        "pattern": { "regexp": "^$" },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".",
-          "endsPattern": "."
-        }
-      }
-    },
-    {
-      "label": "api: typecheck",
-      "type": "npm",
-      "script": "typecheck",
-      "path": "apps/api",
-      "group": "build",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "api" },
-      "problemMatcher": ["$tsc"]
-    },
-    {
-      "label": "api: test",
-      "type": "npm",
-      "script": "test",
-      "path": "apps/api",
+      "label": "check",
+      "type": "shell",
+      "command": "pnpm run check",
+      "options": { "cwd": "${workspaceFolder}" },
       "group": "test",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "api" },
-      "problemMatcher": []
-    },
-    {
-      "label": "api: db:generate",
-      "type": "npm",
-      "script": "db:generate",
-      "path": "apps/api",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "api" },
-      "problemMatcher": []
-    },
-    {
-      "label": "api: db:migrate",
-      "type": "npm",
-      "script": "db:migrate",
-      "path": "apps/api",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "api" },
-      "problemMatcher": []
-    },
-    {
-      "label": "api: db:studio",
-      "type": "npm",
-      "script": "db:studio",
-      "path": "apps/api",
-      "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "group": "api"
-      },
-      "problemMatcher": {
-        "owner": "drizzle",
-        "pattern": { "regexp": "^$" },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".",
-          "endsPattern": "."
-        }
-      }
-    },
-    {
-      "label": "mobile: start",
-      "type": "npm",
-      "script": "start",
-      "path": "apps/mobile",
-      "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "group": "mobile"
-      },
-      "problemMatcher": {
-        "owner": "expo",
-        "pattern": { "regexp": "^$" },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".",
-          "endsPattern": "."
-        }
-      }
-    },
-    {
-      "label": "mobile: android",
-      "type": "npm",
-      "script": "android",
-      "path": "apps/mobile",
-      "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "group": "mobile"
-      },
-      "problemMatcher": {
-        "owner": "expo",
-        "pattern": { "regexp": "^$" },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".",
-          "endsPattern": "."
-        }
-      }
-    },
-    {
-      "label": "mobile: ios",
-      "type": "npm",
-      "script": "ios",
-      "path": "apps/mobile",
-      "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "group": "mobile"
-      },
-      "problemMatcher": {
-        "owner": "expo",
-        "pattern": { "regexp": "^$" },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".",
-          "endsPattern": "."
-        }
-      }
-    },
-    {
-      "label": "mobile: web",
-      "type": "npm",
-      "script": "web",
-      "path": "apps/mobile",
-      "isBackground": true,
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "group": "mobile"
-      },
-      "problemMatcher": {
-        "owner": "expo",
-        "pattern": { "regexp": "^$" },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": ".",
-          "endsPattern": "."
-        }
-      }
-    },
-    {
-      "label": "mobile: typecheck",
-      "type": "npm",
-      "script": "typecheck",
-      "path": "apps/mobile",
-      "group": "build",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "mobile" },
-      "problemMatcher": ["$tsc"]
-    },
-    {
-      "label": "mobile: lint",
-      "type": "npm",
-      "script": "lint",
-      "path": "apps/mobile",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "mobile" },
-      "problemMatcher": ["$eslint-stylish"]
-    },
-    {
-      "label": "mobile: lint:fix",
-      "type": "npm",
-      "script": "lint:fix",
-      "path": "apps/mobile",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "mobile" },
-      "problemMatcher": ["$eslint-stylish"]
-    },
-    {
-      "label": "mobile: format",
-      "type": "npm",
-      "script": "format",
-      "path": "apps/mobile",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "mobile" },
-      "problemMatcher": []
-    },
-    {
-      "label": "mobile: format:check",
-      "type": "npm",
-      "script": "format:check",
-      "path": "apps/mobile",
-      "presentation": { "reveal": "always", "panel": "shared", "group": "mobile" },
-      "problemMatcher": []
-    },
-    {
-      "label": "dev: api + mobile",
-      "dependsOn": ["root: db:up", "root: dev:api", "root: dev:mobile"],
-      "dependsOrder": "parallel",
-      "problemMatcher": [],
-      "presentation": { "reveal": "always", "panel": "dedicated", "group": "dev" }
+      "presentation": { "reveal": "always", "panel": "shared", "group": "check" },
+      "problemMatcher": ["$tsc", "$eslint-stylish"]
     }
   ]
 }

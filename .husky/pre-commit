@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+# Git GUIs (GitHub Desktop, etc.) use a minimal PATH. Restore nvm / pnpm / Homebrew.
+export PATH="$HOME/Library/pnpm:$HOME/.local/share/pnpm:/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+if [ -s "$HOME/.nvm/nvm.sh" ]; then
+  # shellcheck disable=SC1091
+  . "$HOME/.nvm/nvm.sh"
+fi
+
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "husky - pnpm not found; install pnpm or add it via ~/.config/husky/init.sh"
+  exit 127
+fi
+
+pnpm exec lint-staged
+pnpm typecheck

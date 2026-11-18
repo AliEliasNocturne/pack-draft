@@ -54,9 +54,11 @@ Dev server: [http://localhost:3000/health](http://localhost:3000/health) (port o
 | `HOST` | `0.0.0.0` | Bind address |
 | `PORT` | `3000` | Listen port |
 | `LOG_LEVEL` | `info` | Fastify logger level |
-| `DATABASE_URL` | `postgresql://pack:pack@localhost:5432/pack_draft` | Postgres connection string |
+| `DATABASE_URL` | local default below; **required in production** | Postgres connection string |
 
-Invalid values fail at startup. See `src/env.ts`. Copy `.env.example` to `.env` for local overrides; `dotenv` loads it in the server and in Drizzle Kit.
+In `development` and `test`, a missing `DATABASE_URL` defaults to `postgresql://pack:pack@localhost:5432/pack_draft`. In `production`, a missing value fails at startup. Drizzle Kit always requires `DATABASE_URL` (use `.env`). See `src/env.ts`.
+
+`GET /health` is a process liveness check (`status` + `uptime`) and does not query Postgres. The pool is created in `buildApp` and closed on Fastify `onClose` (SIGINT/SIGTERM); the first DB-backed route will use it.
 
 ## Database schema and migrations
 
