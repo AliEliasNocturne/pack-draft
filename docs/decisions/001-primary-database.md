@@ -169,7 +169,7 @@ We choose **PostgreSQL** as the primary database for all transactional data.
 Not decided here:
 
 - **Which managed Postgres host** (for example Amazon RDS or Aurora PostgreSQL, Neon, Supabase, Google Cloud SQL). Decide this together with the server hosting ADR.
-- **ORM and migration tool.** Decide this with the API and server ADRs.
+- **ORM and migration tool.** Decided in [ADR-012](./012-orm-and-migrations.md) (Drizzle ORM + Drizzle Kit).
 - **Cache and leaderboards.** Redis (or similar) can be added for live standings and sports-data fan-out. It is not a source of truth.
 - **Analytics.** If reporting queries start to slow the app, add a read replica first. Polymarket's path (ClickHouse beside Postgres) is a later option.
 
