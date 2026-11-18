@@ -32,13 +32,13 @@ Press `i` / `a` in the Expo CLI to open a simulator if you started with `start` 
 
 Run from `apps/mobile` or with `pnpm --filter @pack-draft/mobile <script>` from the root.
 
-| Script | Purpose |
-| --- | --- |
-| `start` | Expo dev server |
-| `ios` | Dev server + iOS |
-| `android` | Dev server + Android |
-| `web` | Dev server + web (optional) |
-| `typecheck` | `tsc --noEmit` |
+| Script      | Purpose                     |
+| ----------- | --------------------------- |
+| `start`     | Expo dev server             |
+| `ios`       | Dev server + iOS            |
+| `android`   | Dev server + Android        |
+| `web`       | Dev server + web (optional) |
+| `typecheck` | `tsc --noEmit`              |
 
 ## Adding dependencies
 
