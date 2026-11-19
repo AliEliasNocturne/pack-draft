@@ -105,7 +105,67 @@ Cons:
 
 Cost: $3,000 per month base, plus support. Not viable at launch.
 
-### Option D: Use the cloud provider's included DNS with no additional protection
+### Option D: Vercel (Pro plan) — hosting, CDN, and DDoS protection
+
+**Note:** This option replaces both ADR-002 (AWS as cloud provider) and ADR-003 (ECS Fargate for API hosting). It is a full platform alternative, not just a CDN layer.
+
+Pros:
+
+- **All-in-one platform.** Hosting, global CDN, DDoS protection, SSL, and CI/CD in one service. No separate DNS, CDN, or compute vendors.
+- Built-in global CDN with edge caching across 100+ locations. Zero egress charges for cached content.
+- DDoS protection included at all plan levels, same as Cloudflare. Unmetered volumetric protection.
+- **Vercel Edge Network** provides automatic edge caching for static assets and API responses with cache headers.
+- Integrated with Next.js, but also supports standalone Node.js APIs via Vercel Functions (serverless).
+- Built-in preview deployments for every git branch. Staging and production environments are native concepts.
+- GitHub integration: automatic deploys on push, PR previews, and deployment status checks.
+- Environment variables and secrets management built in, with preview/production scoping.
+- **Vercel Firewall** (add-on, $5–$10/month or included on higher plans) provides WAF rules, rate limiting, and bot protection.
+- No server management. Functions auto-scale to zero and scale up automatically.
+- Same platform many Next.js and TypeScript apps use. Large community and good documentation.
+
+Cons:
+
+- **Serverless-only for the API.** Vercel Functions are AWS Lambda under the hood, with a 10-second execution limit (extendable to 5 minutes on Pro, 15 minutes on Enterprise). [ADR-003](./003-api-runtime-and-compute.md) chose ECS Fargate specifically for long-lived containers. Pack Draft needs:
+  - A sports data poller that runs continuously or every 30-60 seconds
+  - Connection pooling to PostgreSQL (serverless creates/destroys connections per request)
+  - In-memory caching for live standings
+  - Background workers for offer expiry, contest settlement, and notifications
+  
+  None of these fit serverless well. A Vercel Cron Job can trigger a function every minute at minimum, which may not be fast enough. Background work would need a separate service (AWS ECS worker, a dedicated server, or a queue processor elsewhere).
+
+- **Database connection pooling is critical.** Each function invocation opens its own database connection. This requires a connection pooler like Supabase Pooler, Neon serverless Postgres, or AWS RDS Proxy ($22+ per month). Without it, a traffic spike exhausts `max_connections` on Postgres.
+
+- **Separate worker infrastructure still needed.** The sports data fetcher, offer expiry sweeps, and contest settlement must run outside Vercel (ECS task, DigitalOcean Droplet, Fly.io, or a separate AWS Lambda with RDS Proxy). This splits the architecture across two platforms.
+
+- **Cold starts.** Functions that haven't run recently take 200-500ms to start. User-facing API requests may see this latency. Pro plan includes "Preloaded Functions" for the most-hit endpoints.
+
+- **Cost grows with usage.** Pro plan is $20/month per user/team member + $0.30 per GB bandwidth beyond 1 TB/month + Function execution time charges. At scale, this can exceed ECS Fargate. A comparable app serving 10M requests with 1 TB bandwidth costs ~$20–$40/month on Vercel vs $85+ on Fargate (but Fargate pays idle, Vercel does not).
+
+- **PostgreSQL hosting still separate.** Vercel does not host databases (except Vercel Postgres, which is Neon under the hood at $10/month for 0.25 vCPU). [ADR-002](./002-cloud-provider.md) chose AWS RDS or Aurora. If Vercel hosts the API, the database stays on AWS, and cross-cloud latency (Vercel → AWS) adds 20-50ms per query unless Vercel Functions run in the same AWS region.
+
+- **No long-lived WebSockets or SSE in Functions.** Live standings updates need polling or a separate real-time service (Pusher, Ably, or a self-hosted WebSocket server). Vercel does not support persistent connections in Functions.
+
+- **Vendor lock-in.** Vercel-specific deployment config and the Functions runtime make it harder to move to another platform later than a Dockerized ECS setup.
+
+- **Enterprise-only for advanced features.** Custom domains per preview deployment, team SSO, and advanced firewall rules require Enterprise (custom pricing, typically $2,000+/month for teams).
+
+Cost: Pro at $20 per team member per month + bandwidth overage ($0.30/GB beyond 1 TB) + function execution charges. For one developer and moderate traffic: **$20–$40 per month**. For a team of 3: **$60+ per month** before bandwidth. Add Vercel Postgres (Neon) at $10–$30/month if not using AWS RDS, or AWS RDS Proxy at $22/month if staying on AWS.
+
+**When this makes sense:**
+
+- The API is truly stateless and fits serverless execution limits (10 seconds per request, or 5-15 minutes on higher plans).
+- The sports data poller can run every 1 minute (Vercel Cron minimum) or is moved to a separate service.
+- Live standings are polled by clients or pushed via a third-party service (Pusher, Ably).
+- The team wants one vendor for hosting, CDN, and DDoS instead of AWS + Cloudflare.
+- Background workers run on a separate platform (AWS ECS, Fly.io, or a dedicated server).
+
+**Why ADR-003 ruled this out:** [ADR-003](./003-api-runtime-and-compute.md) evaluated Lambda Event Functions (similar to Vercel Functions) and chose Fargate because:
+
+> "Every concurrent execution holds a database connection. It needs RDS Proxy (about $21.90 per month for a 2 vCPU database, $0.015 per vCPU-hour with a 2 vCPU minimum) and a reserved-concurrency cap. A drop spike can otherwise open thousands of connections. [...] No fit for a sub-minute sports poller. Scheduled invocations run at best once a minute, so a long-running worker is needed anyway. That means two compute models."
+
+Vercel has the same constraints. If the project requirements change (slower data updates, external real-time service, separate worker service), Vercel becomes viable.
+
+### Option E: Use the cloud provider's included DNS with no additional protection
 
 Pros:
 
@@ -123,7 +183,7 @@ Cost: $0.50 per month for Route 53, plus egress from the origin for every reques
 
 ## Decision
 
-We choose **Cloudflare Pro** because:
+We choose **Cloudflare Pro** as a CDN and DDoS protection layer in front of the AWS origin (from [ADR-002](./002-cloud-provider.md) and [ADR-003](./003-api-runtime-and-compute.md)), because:
 
 1. **Unmetered DDoS protection** is included at all plan levels, with no per-GB overage charges. A volumetric attack during a pack drop or contest deadline will not take the app offline or balloon the bill.
 2. Cloudflare is the same stack Sorare, Kalshi, and Polymarket use for similar apps (collectibles, real-money contests, marketplace). It is proven in this domain.
@@ -133,8 +193,19 @@ We choose **Cloudflare Pro** because:
 6. Fast global DNS and edge caching improve latency for users worldwide. No per-query DNS charges.
 7. Terraform support via the `cloudflare/cloudflare` provider makes infrastructure reproducible and auditable.
 8. The team can upgrade to Business ($200/month) or Enterprise (custom pricing) later if ML-based bot detection or a dedicated account team is needed. Pro is enough to launch.
+9. **Works with the existing architecture.** [ADR-003](./003-api-runtime-and-compute.md) chose ECS Fargate for long-lived containers (sports data poller, connection pooling, background workers). Cloudflare sits in front of the AWS origin without changing the compute model.
 
 We accept that this adds a second vendor to manage. The cost and risk reduction justifies it.
+
+### Why not Vercel?
+
+Vercel (Option D) is an attractive all-in-one platform, but it conflicts with [ADR-003](./003-api-runtime-and-compute.md)'s requirements:
+
+- **Pack Draft needs long-lived containers.** The sports data poller runs every 30-60 seconds (Vercel Cron minimum is 1 minute). Background workers handle offer expiry, contest settlement, and notification fan-out. In-memory caching for live standings. Connection pooling to PostgreSQL. None of these fit serverless execution limits (10 seconds per request on Vercel Functions, extendable to 5-15 minutes).
+- **Serverless creates connection storms.** Each Vercel Function invocation opens its own database connection. A pack drop spike could open thousands of connections and exhaust Postgres `max_connections`. This needs RDS Proxy ($22/month) and a concurrency cap, which throttles requests with HTTP 429 during the exact moments (pack drops, contest deadlines) when the app needs to stay up.
+- **Workers still need a separate platform.** Even on Vercel, the sports data fetcher and background sweeps must run elsewhere (AWS ECS, Fly.io, DigitalOcean). This splits the codebase and deployment pipeline across two platforms instead of keeping everything in one AWS account.
+
+If the project requirements change (slower data updates, external real-time push service, simpler background job model), Vercel becomes a strong option. For now, the workload fits containers better than serverless.
 
 AWS Shield Advanced would be the enterprise-grade choice, but $3,000 per month is not justified before revenue. Cloudflare Pro gives DDoS protection and edge caching for 0.7% of that cost.
 
@@ -155,8 +226,18 @@ AWS Shield Advanced would be the enterprise-grade choice, but $3,000 per month i
 
 - [Cloudflare DDoS Protection](https://www.cloudflare.com/ddos/)
 - [Cloudflare Pricing](https://www.cloudflare.com/plans/)
+- [Cloudflare Terraform Provider](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs)
 - [AWS Shield Pricing](https://aws.amazon.com/shield/pricing/)
+- [AWS Shield Advanced](https://aws.amazon.com/shield/features/)
 - [AWS CloudFront Pricing](https://aws.amazon.com/cloudfront/pricing/)
 - [AWS WAF Pricing](https://aws.amazon.com/waf/pricing/)
+- [AWS Route 53 Pricing](https://aws.amazon.com/route53/pricing/)
+- [Vercel Pricing](https://vercel.com/pricing)
+- [Vercel Functions Documentation](https://vercel.com/docs/functions)
+- [Vercel Edge Network](https://vercel.com/docs/edge-network/overview)
+- [Vercel Firewall](https://vercel.com/docs/security/vercel-firewall)
+- [Vercel Cron Jobs](https://vercel.com/docs/cron-jobs)
 - [Sorare infrastructure (LinkedIn profiles)](https://www.linkedin.com/in/example)
 - [Kalshi nameserver lookup](https://mxtoolbox.com/SuperTool.aspx?action=ns%3akalshi.com)
+- [ADR-002: Use AWS as the cloud provider](./002-cloud-provider.md)
+- [ADR-003: Use Node.js with TypeScript on ECS Fargate for the API](./003-api-runtime-and-compute.md)
