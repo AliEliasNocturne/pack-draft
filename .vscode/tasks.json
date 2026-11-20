@@ -1,5 +1,12 @@
 {
   "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "migrationName",
+      "type": "promptString",
+      "description": "Migration name slug (e.g. create_users)"
+    }
+  ],
   "tasks": [
     {
       "label": "dev:api",
@@ -112,7 +119,15 @@
     {
       "label": "db:generate",
       "type": "shell",
-      "command": "pnpm run db:generate",
+      "command": "pnpm run db:generate -- --name=${input:migrationName}",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "shared", "group": "db" },
+      "problemMatcher": []
+    },
+    {
+      "label": "db:generate:mobile",
+      "type": "shell",
+      "command": "pnpm --filter @pack-draft/mobile db:generate --name=${input:migrationName}",
       "options": { "cwd": "${workspaceFolder}" },
       "presentation": { "reveal": "always", "panel": "shared", "group": "db" },
       "problemMatcher": []

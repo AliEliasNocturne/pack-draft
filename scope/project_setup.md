@@ -1,0 +1,2 @@
+- create github accounts
+- setup branch protection
