@@ -57,3 +57,24 @@ Run a script in one package with `pnpm --filter @pack-draft/api <script>`.
 - Package names use the `@pack-draft/` scope.
 - Dependency versions used by several packages live in the `catalog:` section of `pnpm-workspace.yaml`.
 - Shared Zod schemas will go in `packages/` when the API and app need to share them.
+
+## Cursor: Ponytail (optional)
+
+[Ponytail](https://github.com/DietrichGebert/ponytail) steers the Cursor agent toward the smallest correct change. It is a personal install (user hooks), not checked into this repo.
+
+```sh
+git clone https://github.com/DietrichGebert/ponytail.git
+node ponytail/scripts/cursor-hooks.js install
+```
+
+Leave the clone where you put it — the hooks point at that path. Open a new Cursor chat to activate.
+
+| Message | Effect |
+| --- | --- |
+| `/ponytail` | Show the current level |
+| `/ponytail lite` | Light touch |
+| `/ponytail full` | Default |
+| `/ponytail ultra` | Max minimalism |
+| `/ponytail off` | Turn off for this chat |
+
+Uninstall: `node ponytail/scripts/cursor-hooks.js uninstall`. Full agent list and options: [INSTALL.md](https://github.com/DietrichGebert/ponytail/blob/main/INSTALL.md).
